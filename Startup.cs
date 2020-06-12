@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using Microsoft.OpenApi.Models;
 
 namespace employee_tracker
 {
@@ -31,8 +32,13 @@ namespace employee_tracker
             services.AddDbContext<EmployeeContext>(opt => opt.UseMySQL(
                 Configuration.GetConnectionString("EmployeeTrackerConnection")
             ));
-            services.AddControllers().AddNewtonsoftJson(s => {
+            services.AddControllers().AddNewtonsoftJson(s =>
+            {
                 s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Employee Tracker API", Version = "v1" });
             });
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IEmployeeTrackerRepo, SqlEmployeeTrackerRepo>();
@@ -46,6 +52,13 @@ namespace employee_tracker
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Employee Tracker API");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 
