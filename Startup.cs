@@ -26,11 +26,13 @@ namespace employee_tracker
         }
 
         public IConfiguration Configuration { get; }
+        private string _connectionString = null;
 
         public void ConfigureServices(IServiceCollection services)
         {
+            _connectionString = Configuration["ConnectionStrings:EmployeeTrackerConnection"];
             services.AddDbContext<EmployeeContext>(opt => opt.UseMySQL(
-                Configuration.GetConnectionString("EmployeeTrackerConnection")
+                _connectionString
             ));
             services.AddControllers().AddNewtonsoftJson(s =>
             {
