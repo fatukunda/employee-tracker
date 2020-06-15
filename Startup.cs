@@ -36,7 +36,7 @@ namespace employee_tracker
             {
                 opt.AddPolicy(name: MyAllowSpecificOrigins, builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000/");
+                    builder.WithOrigins("http://localhost:3000");
                 });
             });
             services.AddControllers().AddNewtonsoftJson(s =>
@@ -68,7 +68,7 @@ namespace employee_tracker
             });
 
             app.UseRouting();
-            
+
             app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
