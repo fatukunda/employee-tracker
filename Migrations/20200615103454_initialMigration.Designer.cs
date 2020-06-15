@@ -8,8 +8,8 @@ using employee_tracker.Data;
 namespace employee_tracker.Migrations
 {
     [DbContext(typeof(EmployeeContext))]
-    [Migration("20200612060325_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20200615103454_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
