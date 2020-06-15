@@ -21,6 +21,7 @@ namespace employee_tracker
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,6 +32,13 @@ namespace employee_tracker
             services.AddDbContext<EmployeeContext>(opt => opt.UseMySQL(
                 Configuration.GetConnectionString("MyDbConnection")
             ));
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy(name: MyAllowSpecificOrigins, builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000/");
+                });
+            });
             services.AddControllers().AddNewtonsoftJson(s =>
             {
                 s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
@@ -60,6 +68,8 @@ namespace employee_tracker
             });
 
             app.UseRouting();
+            
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
