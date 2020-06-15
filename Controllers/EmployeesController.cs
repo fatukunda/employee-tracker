@@ -3,11 +3,13 @@ using AutoMapper;
 using employee_tracker.Data;
 using employee_tracker.Dtos;
 using employee_tracker.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace employee_tracker.Controllers
 {
+    [EnableCors]
     [Route("api/v1/employees")]
     [ApiController]
     public class EmployeesController : ControllerBase
