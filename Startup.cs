@@ -20,17 +20,14 @@ namespace employee_tracker
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-        private string _connectionString = null;
-
         public void ConfigureServices(IServiceCollection services)
         {
-            _connectionString = Configuration["MyDbConnection:value"];
             services.AddDbContext<EmployeeContext>(opt => opt.UseMySQL(
                 Configuration.GetConnectionString("MyDbConnection")
             ));
