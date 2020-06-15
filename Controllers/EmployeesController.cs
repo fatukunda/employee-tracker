@@ -3,6 +3,7 @@ using AutoMapper;
 using employee_tracker.Data;
 using employee_tracker.Dtos;
 using employee_tracker.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,13 +22,15 @@ namespace employee_tracker.Controllers
             _repository = repository;
             _mapper = mapper;
         }
-
+        [EnableCors]
         [HttpGet]
         public ActionResult<IEnumerable<EmployeeReadDto>> GetAllEmployees()
         {
             var employeeItems = _repository.GetAllEmployees();
             return Ok(_mapper.Map<IEnumerable<EmployeeReadDto>>(employeeItems));
         }
+
+        [EnableCors]
         [HttpGet("{id}", Name = "GetEmployeeById")]
         public ActionResult<EmployeeReadDto> GetEmployeeById(int id)
         {
@@ -38,6 +41,8 @@ namespace employee_tracker.Controllers
             }
             return Ok(_mapper.Map<EmployeeReadDto>(employeeItem));
         }
+
+        [EnableCors]
         [HttpPost]
         public ActionResult<EmployeeReadDto> CreateEmployee(EmployeeCreateDto employeeCreateDto)
         {
@@ -49,6 +54,8 @@ namespace employee_tracker.Controllers
 
             return CreatedAtRoute(nameof(GetEmployeeById), new { id = employeeReadDto.id }, employeeReadDto);
         }
+
+        [EnableCors]
         [HttpPut("{id}")]
         public ActionResult UpdateEmployee(int id, EmployeeUpdateDto employeeUpdateDto)
         {
@@ -63,6 +70,8 @@ namespace employee_tracker.Controllers
 
             return NoContent();
         }
+
+        [EnableCors]
         [HttpPatch("{id}")]
         public ActionResult PartialEmployeeUpdate(int id, JsonPatchDocument<EmployeeUpdateDto> patchDoc)
         {
@@ -83,6 +92,8 @@ namespace employee_tracker.Controllers
 
             return NoContent();
         }
+
+        [EnableCors]
         [HttpDelete("{id}")]
         public ActionResult DeleteEmployee(int id)
         {

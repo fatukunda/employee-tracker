@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using Microsoft.OpenApi.Models;
+using Microsoft.Net.Http.Headers;
 
 namespace employee_tracker
 {
@@ -36,7 +37,9 @@ namespace employee_tracker
             {
                 opt.AddPolicy(name: MyAllowSpecificOrigins, builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000");
+                    builder.WithOrigins("http://localhost:3000")
+                    .WithHeaders(HeaderNames.ContentType, "x-custom-header")
+                    .WithMethods("PUT", "PATCH", "DELETE", "GET", "OPTIONS");
                 });
             });
             services.AddControllers().AddNewtonsoftJson(s =>
